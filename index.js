@@ -102,11 +102,10 @@ function callSendAPI(sender_psid, response) {
       "id": sender_psid
     },
     "message": response
-  }
+  };
 
   const ACCESS_TOKEN = "EAAG4P251ImUBAKsVH67fUBqJv7o6AzcMDNryYTMB885ryCmXn2koOmX3gbsDPmGqWjN7Yr1ZC1lrTgZALLQbsXbbCA9xji7LV9SoVRb3WccXzB2poQmdY2lpoqq7LrZBlap3vQCvwuiFWojxUG8CXUfZAO8FmRFlXzb0taMqcgZDZD";
  
-
   //send the HTTP request to the messenger platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
