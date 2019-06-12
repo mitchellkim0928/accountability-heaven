@@ -9,6 +9,12 @@ const
 // set server port and logs message on success 
 app.listen(process.env.PORT || 1337, () => console.log('Webhook is listening on port 1337...'));
 
+
+// Index route
+app.get('/', (req, res) => {
+  res.send('Hello world, I am a chat bot')
+});
+
 // create POST endpoint 
 app.post('/webhook', (req, res) => {
 
