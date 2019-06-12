@@ -28,6 +28,10 @@ app.post('/webhook', (req, res) => {
       // retrieves the message.  entry.message is an array, but will always contain one.
       let webhook_event = entry.messaging[0];
       console.log(webhook_event);
+
+      // get the sender PSID
+      let sender_psid = webhook_event.sender.id;
+      console.log('Sender PSID: ' + sender_psid);
     });
 
     //returns a 200 to all requests
@@ -65,3 +69,12 @@ app.get('/webhook', (req, res) => {
     }
   } 
 });
+
+// handle message events
+function handleMessage(sender_psid, received_message) {
+
+}
+
+function handlePostback(sender_psid, received_postback) {}
+
+function callSendAPI(sender_psid, response) {}
