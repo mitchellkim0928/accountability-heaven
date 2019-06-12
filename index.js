@@ -4,6 +4,7 @@
 const 
   express = require('express'),
   bodyParser = require('body-parser'),
+  request = require('request'),
   app = express().use(bodyParser.json()); // express http server created
 
 // set server port and logs message on success 
@@ -32,6 +33,12 @@ app.post('/webhook', (req, res) => {
       // get the sender PSID
       let sender_psid = webhook_event.sender.id;
       console.log('Sender PSID: ' + sender_psid);
+      
+      if (webhook_event.message) {
+        handleMessage(sender_psid, webhook_event.message);
+      } else if (webhook_event.postback) {
+        handlePostback(sender_psid, webhook_event.postback);
+      }
     });
 
     //returns a 200 to all requests
@@ -73,8 +80,44 @@ app.get('/webhook', (req, res) => {
 // handle message events
 function handleMessage(sender_psid, received_message) {
 
+  let responsoe;
+
+  // Check if the message contains text
+  if (received_message.text) {
+    // create the payload for a basic text message
+    response = {
+      "text": `You sent the message: "${receivced_message.text}".`
+    }
+  }
+  
+  callSendAPI(sender_psid, response);
 }
 
 function handlePostback(sender_psid, received_postback) {}
 
-function callSendAPI(sender_psid, response) {}
+function callSendAPI(sender_psid, response) {
+  // construct the message body
+  let request_body = {
+    "recipient": {
+      "id": sender_psid
+    },
+    "message": response
+  }
+
+  //send the HTTP request to the messenger platform
+  request({
+    "uri": "https://graph.facebook.com/v2.6/me/messages",
+    "qs": 
+      { "access_token": 
+"EAAG4P251ImUBAKsVH67fUBqJv7o6AzcMDNryYTMB885ryCmXn2koOmX3gbsDPmGqWjN7Yr1ZC1lrTgZALLQbsXbbCA9xji7LV9SoVRb3WccXzB2poQmdY2lpoqq7LrZBlap3vQCvwuiFWojxUG8CXUfZAO8FmRFlXzb0taMqcgZDZD"
+      },
+    "method": "POST",
+    "json": request_body
+  }, (err, res, body) => {
+    if (!err) {
+      console.log('message sent!');
+    } else {
+      console.error("Unable to send message:" + err);
+    }
+  });
+}
