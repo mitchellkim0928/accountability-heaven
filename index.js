@@ -133,7 +133,6 @@ function handlePostback(sender_psid, received_postback) {
 
   // Get the paylod for the postback
   let payload = received_postback.payload;
-
   // set the response based on the postback payload
   if (payload === 'yes') {
     response = {"test": "Thanks!"};
