@@ -5,7 +5,12 @@ const
   express = require('express'),
   bodyParser = require('body-parser'),
   request = require('request'),
+  mongoose = require('mongoose'),
   app = express().use(bodyParser.json()); // express http server created
+
+// setting up question db
+const db = mongoose.connect(process.env.MONGODB_URI);
+const Question = require('./question');
 
 // set server port and logs message on success 
 app.listen(process.env.PORT || 1337, () => console.log('Webhook is listening on port 1337...'));
