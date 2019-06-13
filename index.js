@@ -31,7 +31,7 @@ app.post('/webhook', (req, res) => {
       console.log(webhook_event);
 
       // get the sender PSID
-      if (webhook_event.sender) {
+     /* if (webhook_event.sender) {
         let sender_psid = webhook_event.sender.id;
         console.log('Sender PSID: ' + sender_psid);
       
@@ -40,7 +40,7 @@ app.post('/webhook', (req, res) => {
         } else if (webhook_event.postback) {
           handlePostback(sender_psid, webhook_event.postback);
         }
-      }
+      }*/
     });
 
     //returns a 200 to all requests
