@@ -94,13 +94,55 @@ function handleMessage(sender_psid, received_message) {
     // create the payload for a basic text message
     response = {
       "text": `You sent the message: "${received_message.text}".`
-    }
+    };
+  } else if (received_message.attachments) {
+    // get the URL of the message attachement
+    let attachment_url = received_message.attachments[0].payload.url;
+    response = {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [{
+            "title": "Is this the right picture?",
+            "subtitle": "Tap a button to answer.",
+            "image_url": attachment_url,
+            "buttons": [
+              {
+                "type": "postback",
+                "title": "Yes!",
+                "payload": "yes",
+              },
+              {
+                "type": "postback",
+                "title": "No!",
+                "payload": "no",
+              }
+            ],
+          }]
+        }
+      }
+    };
   }
   
   callSendAPI(sender_psid, response);
 };
 
-function handlePostback(sender_psid, received_postback) {};
+function handlePostback(sender_psid, received_postback) {
+  var response;
+
+  // Get the paylod for the postback
+  let payload = received_postback.payload;
+
+  // set the response based on the postback payload
+  if (payload === 'yes') {
+    response = {"test": "Thanks!"};
+  } else if (payload === 'no') {
+    response = {"test": "Oops, try sending another image."};
+  }
+
+  callSendAPI(sender_psid, response);
+};
 
 function callSendAPI(sender_psid, response) {
   // construct the message body
